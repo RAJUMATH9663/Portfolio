@@ -4,6 +4,7 @@ import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars } from '@react
 import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown } from 'react-icons/fa';
+import ProfileCard from './ProfileCard';
 
 const AnimatedSphere = () => {
   const meshRef = useRef();
@@ -185,62 +186,29 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* ── Right: 3D Scene ── */}
+          {/* ── Right: Profile Card ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
-            className="hidden lg:block h-[560px] relative"
+            className="hidden lg:flex h-[560px] relative items-center justify-center"
           >
-            {/* Outer glow ring */}
-            <div className="absolute inset-0 m-auto w-80 h-80 rounded-full bg-accent/5 blur-3xl animate-pulse-slow" />
-            <Canvas camera={{ position: [0, 0, 4], fov: 45 }}>
-              <ambientLight intensity={0.4} />
-              <directionalLight position={[5, 5, 5]} intensity={1.5} color="#818cf8" />
-              <directionalLight position={[-5, -5, 5]} intensity={0.8} color="#22d3ee" />
-              <Stars radius={80} depth={50} count={3000} factor={3} saturation={0} fade speed={1} />
-              <Suspense fallback={null}>
-                <AnimatedSphere />
-              </Suspense>
-              <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.8} />
-            </Canvas>
-
-            {/* Floating badge cards */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-10 -left-8 glass-card rounded-xl px-4 py-3 flex items-center gap-3"
-            >
-              <span className="text-2xl">🤖</span>
-              <div>
-                <p className="text-xs font-bold text-textMain">AI Engineer</p>
-                <p className="text-xs text-textFaint">LangChain & LangGraph</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute bottom-20 -right-4 glass-card rounded-xl px-4 py-3 flex items-center gap-3"
-            >
-              <span className="text-2xl">⚡</span>
-              <div>
-                <p className="text-xs font-bold text-textMain">Backend Dev</p>
-                <p className="text-xs text-textFaint">Django & Python</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-              className="absolute top-1/2 -right-12 glass-card rounded-xl px-4 py-3 flex items-center gap-3"
-            >
-              <span className="text-2xl">🚀</span>
-              <div>
-                <p className="text-xs font-bold text-textMain">25+ Projects</p>
-                <p className="text-xs text-textFaint">Built & Shipped</p>
-              </div>
-            </motion.div>
+            <div className="w-full max-w-sm">
+              <ProfileCard
+                name="Rajashekhar"
+                title="Software Engineer"
+                handle="rajashekhar"
+                status="Available"
+                contactText="Contact Me"
+                avatarUrl="/profile.jpeg" 
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={false}
+                behindGlowColor="rgba(125, 190, 255, 0.67)"
+                behindGlowEnabled={true}
+                innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+              />
+            </div>
           </motion.div>
         </div>
 

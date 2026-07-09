@@ -146,15 +146,28 @@ const Skills = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.7 }}
-          className="mt-16 flex flex-wrap justify-center gap-4"
+          className="mt-16 w-full overflow-hidden flex relative"
         >
-          {[
-            'Python', 'Django', 'React', 'LangChain', 'LangGraph',
-            'Neo4j', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL',
-            'MongoDB', 'Ragas', 'Opik', 'Nginx', 'Git',
-          ].map(tech => (
-            <span key={tech} className="tech-chip cursor-default">{tech}</span>
-          ))}
+          {/* Gradient Masks */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bgAlt to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-bgAlt to-transparent z-10 pointer-events-none" />
+
+          {/* Marquee Content */}
+          <div className="flex w-max animate-marquee">
+            {[...Array(2)].map((_, i) => (
+              <div key={i} className="flex gap-4 px-2">
+                {[
+                  'Python', 'Django', 'React', 'LangChain', 'LangGraph',
+                  'Neo4j', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL',
+                  'MongoDB', 'Ragas', 'Opik', 'Nginx', 'Git',
+                ].map((tech, j) => (
+                  <span key={`${i}-${j}`} className="tech-chip cursor-default flex-shrink-0">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
