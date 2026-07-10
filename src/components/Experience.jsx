@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
 const experiences = [
   {
@@ -70,54 +69,57 @@ const Experience = () => {
         </motion.div>
 
         {/* Timeline */}
-        <div className="relative h-[800px]">
+        <div className="relative">
           {/* Center line */}
           <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-cyan to-transparent hidden md:block" />
 
-          <ScrollStack useWindowScroll={false}>
+          <div className="flex flex-col gap-10">
             {experiences.map((exp, i) => {
               const c = colorMap[exp.color];
               return (
-                <ScrollStackItem key={i}>
-                  <div
-                    className="md:pl-20 relative w-full"
-                  >
-                    {/* Timeline dot */}
-                    <div className={`absolute left-0 top-6 w-12 h-12 rounded-full border ${c.border} bg-bg flex items-center justify-center hidden md:flex`}>
-                      <div className={`w-4 h-4 rounded-full ${c.dot}`} style={{ boxShadow: `0 0 12px currentColor` }} />
-                    </div>
-
-                    {/* Card */}
-                    <div className="glass-card rounded-2xl p-7">
-                      <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-                        <div>
-                          <h3 className="text-xl font-bold text-textMain">{exp.role}</h3>
-                          <p className="text-textMuted mt-1">{exp.company}</p>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <span className="font-mono text-xs text-textFaint glass border border-border px-3 py-1.5 rounded-full">
-                            {exp.period}
-                          </span>
-                          <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${c.badge}`}>
-                            {exp.type}
-                          </span>
-                        </div>
-                      </div>
-
-                      <ul className="flex flex-col gap-3">
-                        {exp.points.map((pt, j) => (
-                          <li key={j} className="flex items-start gap-3 text-textMuted text-sm leading-relaxed">
-                            <span className={`mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full ${c.dot}`} />
-                            {pt}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="md:pl-20 relative w-full"
+                >
+                  {/* Timeline dot */}
+                  <div className={`absolute left-0 top-6 w-12 h-12 rounded-full border ${c.border} bg-bg flex items-center justify-center hidden md:flex`}>
+                    <div className={`w-4 h-4 rounded-full ${c.dot}`} style={{ boxShadow: `0 0 12px currentColor` }} />
                   </div>
-                </ScrollStackItem>
+
+                  {/* Card */}
+                  <div className="glass-card rounded-2xl p-7 hover:border-white/20 transition-colors duration-300">
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
+                      <div>
+                        <h3 className="text-xl font-bold text-textMain">{exp.role}</h3>
+                        <p className="text-textMuted mt-1">{exp.company}</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className="font-mono text-xs text-textFaint glass border border-border px-3 py-1.5 rounded-full">
+                          {exp.period}
+                        </span>
+                        <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${c.badge}`}>
+                          {exp.type}
+                        </span>
+                      </div>
+                    </div>
+
+                    <ul className="flex flex-col gap-3">
+                      {exp.points.map((pt, j) => (
+                        <li key={j} className="flex items-start gap-3 text-textMuted text-sm leading-relaxed">
+                          <span className={`mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full ${c.dot}`} />
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
               );
             })}
-          </ScrollStack>
+          </div>
         </div>
       </div>
     </section>

@@ -6,8 +6,8 @@ const contactInfo = [
   {
     icon: FaEnvelope,
     label: 'Email',
-    value: 'rajashekhar@example.com',
-    href: 'mailto:rajashekhar@example.com',
+    value: 'rajumthpt@gmail.com',
+    href: 'mailto:rajumthpt@gmail.com',
     color: 'text-rose-400',
     bg: 'bg-rose-500/10 border-rose-500/20',
   },
@@ -32,7 +32,7 @@ const contactInfo = [
 const socials = [
   { icon: FaGithub, href: 'https://github.com/', label: 'GitHub', color: 'hover:border-white hover:text-white' },
   { icon: FaLinkedin, href: 'https://linkedin.com/', label: 'LinkedIn', color: 'hover:border-blue-400 hover:text-blue-400' },
-  { icon: FaEnvelope, href: 'mailto:rajashekhar@example.com', label: 'Email', color: 'hover:border-rose-400 hover:text-rose-400' },
+  { icon: FaEnvelope, href: 'mailto:rajumthpt@gmail.com', label: 'Email', color: 'hover:border-rose-400 hover:text-rose-400' },
 ];
 
 const Contact = () => {
@@ -65,12 +65,38 @@ const Contact = () => {
         setStatus('sent');
         setForm({ name: '', email: '', message: '' });
       } else {
-        setStatus(null);
-        alert('Something went wrong. Please try again.');
+        throw new Error('API response not ok');
       }
     } catch (error) {
-      setStatus(null);
-      alert('Error sending message. Please try again later.');
+      console.error('AJAX form submission failed, falling back to standard form:', error);
+      
+      // Fallback for the first-time activation on FormSubmit
+      // (which fails AJAX due to CORS redirect to the activation page)
+      const fallbackForm = document.createElement('form');
+      fallbackForm.method = 'POST';
+      fallbackForm.action = 'https://formsubmit.co/rajumthpt@gmail.com';
+      fallbackForm.target = '_blank'; // Open activation in new tab
+      
+      const appendInput = (name, value) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        fallbackForm.appendChild(input);
+      };
+
+      appendInput('name', form.name);
+      appendInput('email', form.email);
+      appendInput('message', form.message);
+      appendInput('_subject', `New Portfolio Message from ${form.name}`);
+      appendInput('_captcha', 'false');
+
+      document.body.appendChild(fallbackForm);
+      fallbackForm.submit();
+      document.body.removeChild(fallbackForm);
+      
+      setStatus('sent');
+      setForm({ name: '', email: '', message: '' });
     }
   };
 

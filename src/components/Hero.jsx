@@ -4,7 +4,6 @@ import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars } from '@react
 import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown } from 'react-icons/fa';
-import ProfileCard from './ProfileCard';
 
 const AnimatedSphere = () => {
   const meshRef = useRef();
@@ -46,7 +45,7 @@ const AnimatedSphere = () => {
 const socialLinks = [
   { icon: FaGithub, href: 'https://github.com/', label: 'GitHub', color: 'hover:text-white' },
   { icon: FaLinkedin, href: 'https://linkedin.com/', label: 'LinkedIn', color: 'hover:text-blue-400' },
-  { icon: FaEnvelope, href: 'mailto:rajashekhar@example.com', label: 'Email', color: 'hover:text-rose-400' },
+  { icon: FaEnvelope, href: 'mailto:rajumthpt@gmail.com', label: 'Email', color: 'hover:text-rose-400' },
 ];
 
 const stats = [
@@ -106,7 +105,14 @@ const Hero = () => {
               I'm a{' '}
               <span className="text-accentLight font-bold">
                 <Typewriter
-                  words={['Software Engineer', 'AI Engineer', 'Backend Developer', 'Problem Solver']}
+                  words={[
+                    'Software Engineer',
+                    'Python Developer',
+                    'Django Developer',
+                    'React Developer',
+                    'AI Engineer',
+                    'Full Stack Developer'
+                  ]}
                   loop={true}
                   cursor
                   cursorStyle="|"
@@ -124,9 +130,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-textMuted text-lg leading-relaxed max-w-[520px]"
             >
-              Passionate Software Engineer with a <span className="text-textMain font-semibold">BCA (CGPA 8.55)</span> and experience building
-              AI-powered applications, backend systems, and full-stack web solutions. I love turning complex
-              engineering problems into elegant, scalable solutions.
+              Hi, I'm Rajashekhar Matapati, a Software Engineer specializing in <span className="text-textMain font-semibold">Python, Django, React, AI, LangChain, REST APIs, Docker, and MySQL</span>. I build scalable web applications and AI-powered solutions.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -186,28 +190,26 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* ── Right: Profile Card ── */}
+          {/* ── Right: Profile Photo ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
             className="hidden lg:flex h-[560px] relative items-center justify-center"
           >
-            <div className="w-full max-w-sm">
-              <ProfileCard
-                name="Rajashekhar"
-                title="Software Engineer"
-                handle="rajashekhar"
-                status="Available"
-                contactText="Contact Me"
-                avatarUrl="/profile.jpeg" 
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={false}
-                behindGlowColor="rgba(125, 190, 255, 0.67)"
-                behindGlowEnabled={true}
-                innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
-              />
+            <div className="w-full max-w-sm relative group">
+              {/* Subtle ambient glow behind the image */}
+              <div className="absolute -inset-4 bg-accent/20 rounded-[2.5rem] blur-2xl group-hover:bg-accent/30 transition-colors duration-500 opacity-60" />
+              
+              {/* Image container */}
+              <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl bg-bgAlt/50 glass">
+                <img 
+                  src="/profile.jpeg" 
+                  alt="Rajashekhar Matapati" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="eager"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
