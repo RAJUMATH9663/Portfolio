@@ -50,7 +50,7 @@ const socialLinks = [
 
 const stats = [
   { value: '25+', label: 'Projects Built' },
-  { value: '8.55', label: 'CGPA (BCA)' },
+  { value: '8.67', label: 'CGPA (BCA)' },
   { value: '3+', label: 'Years Coding' },
 ];
 
@@ -119,11 +119,11 @@ const Hero = () => {
                 <Typewriter
                   words={[
                     'Software Engineer',
+                    'QA Engineer',
+                    'Full Stack Developer',
                     'Python Developer',
-                    'Django Developer',
-                    'React Developer',
+                    'PHP & Laravel Developer',
                     'AI Engineer',
-                    'Full Stack Developer'
                   ]}
                   loop={true}
                   cursor
@@ -142,7 +142,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-textMuted text-lg leading-relaxed max-w-[520px]"
             >
-              Hi, I'm Rajashekhar Matapati, a Software Engineer specializing in <span className="text-textMain font-semibold">Python, Django, React, AI, LangChain, REST APIs, Docker, and MySQL</span>. I build scalable web applications and AI-powered solutions.
+              Detail-oriented Full Stack Developer and QA Engineer delivering 25+ projects spanning full-stack web development, AI/ML systems, and IT infrastructure. Proven track record building production apps with <span className="text-textMain font-semibold">Python, Django, PHP, Laravel, WordPress, and MySQL</span>.
             </motion.p>
 
             {/* CTA Buttons */}

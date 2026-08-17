@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  FaPython, FaReact, FaDocker, FaDatabase, FaAws, FaGitAlt, FaServer,
+  FaPython, FaReact, FaDocker, FaDatabase, FaAws, FaGitAlt, FaServer, FaPhp, FaWordpress, FaLaravel
 } from 'react-icons/fa';
 import {
   SiLangchain, SiKubernetes,
@@ -16,21 +16,21 @@ const categories = [
     icon: <FaPython className="text-4xl" />,
     skills: [
       { name: 'Python', level: 92, icon: <FaPython /> },
-      { name: 'JavaScript', level: 80, icon: <SiJavascript /> },
+      { name: 'PHP', level: 88, icon: <FaPhp /> },
+      { name: 'JavaScript', level: 85, icon: <SiJavascript /> },
       { name: 'SQL', level: 85, icon: <FaDatabase /> },
-      { name: 'C / C#', level: 70, icon: null },
     ],
   },
   {
-    title: 'AI & Frameworks',
+    title: 'Frameworks & CMS',
     color: 'from-cyan-500 to-blue-600',
     glow: 'rgba(34,211,238,0.3)',
-    icon: <SiLangchain className="text-4xl" />,
+    icon: <FaLaravel className="text-4xl" />,
     skills: [
-      { name: 'LangChain', level: 88, icon: <SiLangchain /> },
-      { name: 'LangGraph', level: 85, icon: null },
       { name: 'Django', level: 90, icon: <FaServer /> },
+      { name: 'Laravel', level: 85, icon: <FaLaravel /> },
       { name: 'React', level: 75, icon: <FaReact /> },
+      { name: 'WordPress', level: 80, icon: <FaWordpress /> },
     ],
   },
   {
@@ -39,22 +39,22 @@ const categories = [
     glow: 'rgba(16,185,129,0.3)',
     icon: <FaDatabase className="text-4xl" />,
     skills: [
+      { name: 'MySQL', level: 90, icon: <SiMysql /> },
       { name: 'PostgreSQL', level: 82, icon: <SiPostgresql /> },
-      { name: 'MySQL', level: 85, icon: <SiMysql /> },
       { name: 'MongoDB', level: 75, icon: <SiMongodb /> },
       { name: 'AWS / Azure', level: 70, icon: <FaAws /> },
     ],
   },
   {
-    title: 'DevOps & Tools',
+    title: 'DevOps & QA',
     color: 'from-orange-500 to-rose-600',
     glow: 'rgba(249,115,22,0.3)',
     icon: <FaDocker className="text-4xl" />,
     skills: [
       { name: 'Docker', level: 80, icon: <FaDocker /> },
-      { name: 'Kubernetes', level: 68, icon: <SiKubernetes /> },
       { name: 'Git / GitHub', level: 90, icon: <FaGitAlt /> },
-      { name: 'Neo4j', level: 82, icon: <FaDatabase /> },
+      { name: 'Manual QA', level: 85, icon: null },
+      { name: 'LangChain', level: 88, icon: <SiLangchain /> },
     ],
   },
 ];
@@ -157,9 +157,9 @@ const Skills = () => {
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-4 px-2">
                 {[
-                  'Python', 'Django', 'React', 'LangChain', 'LangGraph',
-                  'Neo4j', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL',
-                  'MongoDB', 'Ragas', 'Opik', 'Nginx', 'Git',
+                  'Python', 'PHP', 'Django', 'Laravel', 'React', 'WordPress', 'QA', 'LangChain', 'LangGraph',
+                  'Neo4j', 'Docker', 'MySQL', 'AWS', 'PostgreSQL',
+                  'MongoDB', 'Ragas', 'Opik', 'Git',
                 ].map((tech, j) => (
                   <span key={`${i}-${j}`} className="tech-chip cursor-default flex-shrink-0">
                     {tech}

@@ -1,18 +1,18 @@
 import { motion } from 'framer-motion';
 
 const about = {
-  description: `I'm a Software Engineer and AI enthusiast from Vijayapura, Karnataka, India. I hold a Bachelor of Computer Applications (BCA) with a stellar CGPA of 8.55. My passion lies at the intersection of AI and backend engineering — crafting intelligent systems that solve real-world problems.`,
+  description: `I'm a Software Engineer and AI enthusiast from Vijayapura, Karnataka, India. I hold a Bachelor of Computer Applications (BCA) with a stellar CGPA of 8.67. My passion lies at the intersection of AI and backend engineering — crafting intelligent systems that solve real-world problems.`,
   traits: [
-    { emoji: '🎓', title: 'Education', desc: 'BCA | CGPA 8.55' },
+    { emoji: '🎓', title: 'Education', desc: 'BCA | CGPA 8.67' },
     { emoji: '📍', title: 'Location', desc: 'Vijayapura, Karnataka' },
     { emoji: '💼', title: 'Focus', desc: 'AI & Backend Engineering' },
-    { emoji: '🌐', title: 'Languages', desc: 'Python, JavaScript, SQL, C' },
+    { emoji: '🌐', title: 'Languages', desc: 'Python, PHP, JavaScript, SQL, C#' },
   ],
   timeline: [
-    { year: '2026', event: 'Completed BCA with CGPA 8.55' },
+    { year: '2026', event: 'Software Engineer & QA Engineer at V G Parekh' },
+    { year: '2026', event: 'Software Development Intern at Digital Dreams' },
+    { year: '2026', event: 'Completed BCA with CGPA 8.67' },
     { year: '2025', event: 'Built AI Data Intelligence Platform' },
-    { year: '2025', event: 'Developed IT Infrastructure Monitor' },
-    { year: '2025', event: 'First full-stack project: Tourism App' },
   ],
 };
 
