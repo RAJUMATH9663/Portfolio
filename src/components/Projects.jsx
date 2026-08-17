@@ -15,7 +15,7 @@ const projects = [
     color: 'from-violet-600/20 to-purple-900/20',
     border: 'border-violet-500/20',
     accent: '#7c3aed',
-    github: 'https://github.com/',
+    github: 'https://github.com/RajashekharMatapati/ai-data-intelligence-platform',
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const projects = [
     color: 'from-cyan-600/20 to-blue-900/20',
     border: 'border-cyan-500/20',
     accent: '#0891b2',
-    github: 'https://github.com/',
+    github: 'https://github.com/RajashekharMatapati/it-infrastructure-monitoring',
   },
   {
     id: 3,
@@ -43,7 +43,7 @@ const projects = [
     color: 'from-emerald-600/20 to-teal-900/20',
     border: 'border-emerald-500/20',
     accent: '#059669',
-    github: 'https://github.com/',
+    github: 'https://github.com/RajashekharMatapati/tourism-information-system',
   },
 ];
 
@@ -194,7 +194,7 @@ const Projects = () => {
           className="text-center mt-14"
         >
           <a
-            href="https://github.com/"
+            href="https://github.com/RajashekharMatapati"
             target="_blank"
             rel="noreferrer"
             className="btn-outline inline-flex items-center gap-2"

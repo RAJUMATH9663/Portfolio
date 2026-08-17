@@ -43,7 +43,7 @@ const AnimatedSphere = () => {
 };
 
 const socialLinks = [
-  { icon: FaGithub, href: 'https://github.com/', label: 'GitHub', color: 'hover:text-white' },
+  { icon: FaGithub, href: 'https://github.com/RajashekharMatapati', label: 'GitHub', color: 'hover:text-white' },
   { icon: FaLinkedin, href: 'https://linkedin.com/', label: 'LinkedIn', color: 'hover:text-blue-400' },
   { icon: FaEnvelope, href: 'mailto:rajumthpt@gmail.com', label: 'Email', color: 'hover:text-rose-400' },
 ];
@@ -57,6 +57,18 @@ const stats = [
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center grid-bg overflow-hidden">
+      {/* 3D Canvas Background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 1.5]} gl={{ powerPreference: 'high-performance', antialias: false }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <Suspense fallback={null}>
+            <AnimatedSphere />
+            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+          </Suspense>
+        </Canvas>
+      </div>
+
       {/* Radial gradient blob */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-accent/10 blur-[120px]" />
