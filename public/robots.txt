@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rajashekarmatapati.vercel.app/sitemap.xml
+Sitemap: https://rajashekarmatapati.in/sitemap.xml
