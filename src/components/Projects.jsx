@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaStar } from 'react-icons/fa';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const projects = [
   {
@@ -52,6 +57,21 @@ const filters = ['All', 'AI / Backend', 'Backend', 'Full-Stack'];
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expanded, setExpanded] = useState(null);
+  const headerRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.from(headerRef.current.children, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: headerRef.current,
+        start: 'top 85%',
+      },
+    });
+  });
 
   const filtered = activeFilter === 'All'
     ? projects
@@ -63,12 +83,7 @@ const Projects = () => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div ref={headerRef} className="text-center mb-16">
           <p className="font-mono text-accent text-sm tracking-widest uppercase mb-3">What I've Built</p>
           <h2 className="section-title text-textMain mb-4">
             Featured <span className="gradient-text">Projects</span>
@@ -77,7 +92,7 @@ const Projects = () => {
           <p className="text-textMuted max-w-md mx-auto">
             A curated selection from <span className="text-textMain font-semibold">25+ backend and full-stack projects</span> I've built and shipped.
           </p>
-        </motion.div>
+        </div>
 
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">

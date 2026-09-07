@@ -1,46 +1,10 @@
-import { useRef, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars } from '@react-three/drei';
+
 import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowDown } from 'react-icons/fa';
+import { ScalesContainer } from "@/components/ui/scales";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 
-const AnimatedSphere = () => {
-  const meshRef = useRef();
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = clock.getElapsedTime() * 0.15;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
-      <Sphere ref={meshRef} args={[1, 64, 64]}>
-        <MeshDistortMaterial
-          color="#6366f1"
-          attach="material"
-          distort={0.45}
-          speed={2}
-          roughness={0.1}
-          metalness={0.8}
-          wireframe={false}
-        />
-      </Sphere>
-      {/* Inner glow sphere */}
-      <Sphere args={[1.15, 32, 32]}>
-        <MeshDistortMaterial
-          color="#22d3ee"
-          attach="material"
-          distort={0.3}
-          speed={1.5}
-          wireframe
-          transparent
-          opacity={0.08}
-        />
-      </Sphere>
-    </Float>
-  );
-};
 
 const socialLinks = [
   { icon: FaGithub, href: 'https://github.com/RajashekharMatapati', label: 'GitHub', color: 'hover:text-white' },
@@ -57,17 +21,7 @@ const stats = [
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center grid-bg overflow-hidden">
-      {/* 3D Canvas Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 1.5]} gl={{ powerPreference: 'high-performance', antialias: false }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <Suspense fallback={null}>
-            <AnimatedSphere />
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          </Suspense>
-        </Canvas>
-      </div>
+
 
       {/* Radial gradient blob */}
       <div className="absolute inset-0 pointer-events-none">
@@ -210,18 +164,21 @@ const Hero = () => {
             className="hidden lg:flex h-[560px] relative items-center justify-center"
           >
             <div className="w-full max-w-sm relative group">
-              {/* Subtle ambient glow behind the image */}
-              <div className="absolute -inset-4 bg-accent/20 rounded-[2.5rem] blur-2xl group-hover:bg-accent/30 transition-colors duration-500 opacity-60" />
-              
-              {/* Image container */}
-              <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl bg-bgAlt/50 glass">
-                <img 
-                  src="/profile.jpeg" 
-                  alt="Rajashekhar Matapati" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="eager"
-                />
-              </div>
+              <BackgroundGradient className="rounded-[2rem] bg-black p-1">
+                {/* Image container */}
+                <ScalesContainer
+                  orientation="diagonal"
+                  size={8}
+                  containerClassName="relative aspect-[3/4] rounded-[1.8rem] overflow-hidden shadow-2xl bg-bgAlt/50 glass"
+                >
+                  <img 
+                    src="/profile.jpeg" 
+                    alt="Rajashekhar Matapati" 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="eager"
+                  />
+                </ScalesContainer>
+              </BackgroundGradient>
             </div>
           </motion.div>
         </div>
