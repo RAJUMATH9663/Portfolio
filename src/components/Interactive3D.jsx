@@ -85,20 +85,18 @@ export default function Interactive3D() {
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            {!sceneLoaded && !isMobile && (
+            {!sceneLoaded && (
               <div className="loader-container">
                 <span className="loader" />
                 <p>Loading 3D scene</p>
               </div>
             )}
 
-            {!isMobile && (
-              <Spline
-                scene={SCENE_URL}
-                className="spline"
-                onLoad={() => setSceneLoaded(true)}
-              />
-            )}
+            <Spline
+              scene={SCENE_URL}
+              className="spline"
+              onLoad={() => setSceneLoaded(true)}
+            />
 
             <motion.div
               className="live-label"

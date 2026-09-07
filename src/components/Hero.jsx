@@ -161,7 +161,7 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
-            className="hidden lg:flex h-[560px] relative items-center justify-center"
+            className="flex h-[380px] lg:h-[560px] relative items-center justify-center mt-10 lg:mt-0"
           >
             <div className="w-full max-w-sm relative group">
               <BackgroundGradient className="rounded-[2rem] bg-black p-1">
