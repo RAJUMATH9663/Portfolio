@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 
 export const BackgroundGradient = ({
@@ -7,53 +6,35 @@ export const BackgroundGradient = ({
   containerClassName,
   animate = true,
 }) => {
-  const variants = {
-    initial: {
-      backgroundPosition: "0 50%",
-    },
-    animate: {
-      backgroundPosition: ["0, 50%", "100% 50%", "0 50%"],
-    },
-  };
   return (
-    <div className={`relative p-[4px] group ${containerClassName || ""}`}>
-      <motion.div
-        variants={animate ? variants : undefined}
-        initial={animate ? "initial" : undefined}
-        animate={animate ? "animate" : undefined}
-        transition={
-          animate
-            ? {
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }
-            : undefined
-        }
+    <div className={`relative p-[3px] group ${containerClassName || ""}`}>
+      {/* GPU-accelerated rotating gradient aura */}
+      <div
+        className={`absolute inset-0 rounded-3xl z-[1] opacity-60 group-hover:opacity-100 transition-opacity duration-500 blur-lg pointer-events-none ${
+          animate ? "animate-gradient-spin" : ""
+        }`}
         style={{
-          backgroundSize: animate ? "400% 400%" : undefined,
+          background:
+            "conic-gradient(from 0deg at 50% 50%, #22c55e, #06b6d4, #8b5cf6, #ec4899, #22c55e)",
+          willChange: "transform",
         }}
-        className={`absolute inset-0 rounded-3xl z-[1] opacity-60 group-hover:opacity-100 blur-xl transition duration-500 bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]`}
       />
-      <motion.div
-        variants={animate ? variants : undefined}
-        initial={animate ? "initial" : undefined}
-        animate={animate ? "animate" : undefined}
-        transition={
-          animate
-            ? {
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }
-            : undefined
-        }
+      {/* Crisp gradient border */}
+      <div
+        className={`absolute inset-0 rounded-3xl z-[1] opacity-80 pointer-events-none ${
+          animate ? "animate-gradient-spin" : ""
+        }`}
         style={{
-          backgroundSize: animate ? "400% 400%" : undefined,
+          background:
+            "conic-gradient(from 0deg at 50% 50%, #22c55e, #06b6d4, #8b5cf6, #ec4899, #22c55e)",
+          willChange: "transform",
         }}
-        className={`absolute inset-0 rounded-3xl z-[1] bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]`}
       />
-      <div className={`relative z-10 h-full w-full ${className || ""}`}>{children}</div>
+      <div className={`relative z-10 h-full w-full rounded-[calc(1.5rem-2px)] overflow-hidden bg-black ${className || ""}`}>
+        {children}
+      </div>
     </div>
   );
 };
+
+export default BackgroundGradient;

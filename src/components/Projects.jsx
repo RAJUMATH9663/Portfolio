@@ -1,226 +1,155 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaExternalLinkAlt, FaStar } from 'react-icons/fa';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const projects = [
   {
-    id: 1,
+    id: '01',
     title: 'AI Data Intelligence Platform',
     category: 'AI / Backend',
     featured: true,
     emoji: '🧠',
-    desc: 'Multi-agent AI system with Natural Language Querying over structured data. Features a Predictive Dashboard with real-time insights, powered by a knowledge graph backend.',
-    longDesc: 'Built a sophisticated multi-agent pipeline using LangGraph for orchestration, Neo4j for the knowledge graph, and OpenRouter for LLM routing. Integrated Ragas for evaluation and Opik for observability.',
-    tech: ['LangGraph', 'Neo4j', 'OpenRouter', 'Ragas', 'Opik', 'Python'],
-    color: 'from-violet-600/20 to-purple-900/20',
-    border: 'border-violet-500/20',
-    accent: '#7c3aed',
-    github: 'https://github.com/RajashekharMatapati/ai-data-intelligence-platform',
+    desc: 'Engineered an AI-driven analytics system for natural language querying over graph-structured data using Neo4j; orchestrated multi-agent LangGraph workflows.',
+    tech: ['LangGraph', 'Neo4j', 'OpenRouter', 'Ragas', 'Opik'],
+    github: 'https://github.com/RAJUMATH9663',
   },
   {
-    id: 2,
-    title: 'Smart Home Services Management System',
+    id: '02',
+    title: 'DevOps Control Center',
+    category: 'DevOps / Full-Stack',
+    featured: false,
+    emoji: '⚙️',
+    desc: 'Developed a DevOps platform automating infrastructure, deployment, and routine operational tasks using a TypeScript frontend and Python backend.',
+    tech: ['TypeScript', 'Python', 'HCL', 'Shell', 'PowerShell'],
+    github: 'https://github.com/RAJUMATH9663',
+  },
+  {
+    id: '03',
+    title: 'BUSIGO Route App',
+    category: 'Mobile / Backend',
+    featured: false,
+    emoji: '🚌',
+    desc: 'Developed a cross-platform bus route and schedule search app. Managed bus routes, city locations, and fares via Firebase Cloud Firestore.',
+    tech: ['Flutter', 'Dart', 'Firebase'],
+    github: 'https://github.com/RAJUMATH9663',
+  },
+  {
+    id: '04',
+    title: 'Smart Home Services',
     category: 'Full-Stack',
     featured: false,
     emoji: '🏠',
-    desc: 'Built a full-stack Home Services web application with a Python backend and an HTML/CSS frontend to manage service provider listings and customer bookings.',
-    longDesc: 'Engineered a comprehensive platform for home services. Implemented secure payment processing to handle customer transactions, managed provider listings, and built a seamless booking flow.',
+    desc: 'Built a full-stack Home Services web application to manage service provider listings and customer bookings with secure payment processing.',
     tech: ['Python', 'Django', 'MySQL', 'HTML/CSS'],
-    color: 'from-cyan-600/20 to-blue-900/20',
-    border: 'border-cyan-500/20',
-    accent: '#0891b2',
-    github: 'https://github.com/RajashekharMatapati/smart-home-services',
-  },
-  {
-    id: 3,
-    title: 'NXRA Digital',
-    category: 'Full-Stack',
-    featured: false,
-    emoji: '🌐',
-    desc: 'Company website for a digital solutions agency offering web development, AI solutions, branding, and digital marketing.',
-    longDesc: 'Developed a modern, responsive website as a freelancer for NXRA Digital. Focused on clean UI/UX and integrated various AI solutions marketing pages.',
-    tech: ['Web Development', 'AI Solutions', 'Branding'],
-    color: 'from-emerald-600/20 to-teal-900/20',
-    border: 'border-emerald-500/20',
-    accent: '#059669',
-    github: 'https://github.com/RajashekharMatapati/nxra-digital',
+    github: 'https://github.com/RAJUMATH9663',
   },
 ];
 
-const filters = ['All', 'AI / Backend', 'Backend', 'Full-Stack'];
-
-const Projects = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [expanded, setExpanded] = useState(null);
-  const headerRef = useRef(null);
-
-  useGSAP(() => {
-    gsap.from(headerRef.current.children, {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: headerRef.current,
-        start: 'top 85%',
-      },
-    });
+const HorizontalScrollCarousel = () => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
   });
 
-  const filtered = activeFilter === 'All'
-    ? projects
-    : projects.filter(p => p.category === activeFilter);
+  // For 4 items, the track needs to move left by (number_of_items - 1) * 100vw -> 3 * 100vw
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
 
   return (
-    <section id="projects" className="relative py-28 overflow-hidden">
-      <div className="absolute left-1/2 top-20 w-[500px] h-[500px] -translate-x-1/2 bg-accent/6 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header */}
-        <div ref={headerRef} className="text-center mb-16">
-          <p className="font-mono text-accent text-sm tracking-widest uppercase mb-3">What I've Built</p>
-          <h2 className="section-title text-textMain mb-4">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <div className="mx-auto w-20 h-0.5 bg-gradient-to-r from-accent to-cyan rounded-full mb-6" />
-          <p className="text-textMuted max-w-md mx-auto">
-            A curated selection from <span className="text-textMain font-semibold">25+ backend and full-stack projects</span> I've built and shipped.
+    <section ref={targetRef} id="projects" className="relative h-[400vh] bg-bg w-full">
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        
+        {/* Background Track Title */}
+        <div className="absolute top-12 left-12 z-20">
+          <p className="font-mono text-detail text-textMuted uppercase tracking-widest flex items-center gap-4">
+            <span className="w-8 h-px bg-accent"></span>
+            Selected Work
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {filters.map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                activeFilter === f
-                  ? 'bg-accent text-white shadow-glow-accent'
-                  : 'glass border border-border text-textMuted hover:text-textMain hover:border-accent/40'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
-        {/* Cards */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence>
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className={`relative rounded-2xl overflow-hidden border ${project.border} cursor-pointer group`}
-                style={{
-                  background: `linear-gradient(135deg, ${project.color})`,
-                }}
-                onClick={() => setExpanded(expanded === project.id ? null : project.id)}
-              >
-                {/* Shine overlay */}
-                <div className="absolute inset-0 bg-card-shine opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                <div className="relative p-7">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-4xl">{project.emoji}</span>
-                      {project.featured && (
-                        <span className="flex items-center gap-1 text-xs font-semibold text-gold bg-gold/10 border border-gold/20 px-2.5 py-1 rounded-full">
-                          <FaStar className="text-gold text-xs" /> Featured
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-xs font-mono text-textFaint glass px-3 py-1 rounded-full border border-border">
-                      {project.category}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-textMain mb-3 group-hover:text-white transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-textMuted text-sm leading-relaxed mb-5">{project.desc}</p>
-
-                  {/* Expanded desc */}
-                  <AnimatePresence>
-                    {expanded === project.id && (
-                      <motion.p
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-textFaint text-sm leading-relaxed mb-5 overflow-hidden"
-                      >
-                        {project.longDesc}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map(t => (
-                      <span key={t} className="tech-chip">{t}</span>
-                    ))}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-4">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={e => e.stopPropagation()}
-                      className="flex items-center gap-2 text-sm font-semibold text-textMuted hover:text-white transition-colors"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <span className="text-textFaint text-xs ml-auto">
-                      {expanded === project.id ? 'Click to collapse ▲' : 'Click for details ▼'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Bottom accent bar */}
-                <div
-                  className="h-1 w-0 group-hover:w-full transition-all duration-700"
-                  style={{ background: `linear-gradient(90deg, ${project.accent}, transparent)` }}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* More projects CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-14"
-        >
-          <a
-            href="https://github.com/RajashekharMatapati"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-outline inline-flex items-center gap-2"
-          >
-            <FaGithub className="text-xl" />
-            View All Projects on GitHub
-          </a>
+        <motion.div style={{ x }} className="flex gap-0 w-[400vw]">
+          {projects.map((project, index) => {
+            return <ProjectCard project={project} key={project.id} index={index} />;
+          })}
         </motion.div>
       </div>
     </section>
   );
 };
 
-export default Projects;
+const ProjectCard = ({ project }) => {
+  return (
+    <div className="w-screen h-screen flex items-center justify-center p-6 md:p-24 relative overflow-hidden flex-shrink-0 group">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 w-full max-w-[1440px] items-center">
+        
+        {/* Left: Image / Visual Preview */}
+        <div 
+          className="relative w-full aspect-video lg:aspect-[4/3] rounded-2xl overflow-hidden glass border border-border group-hover:border-white/10 transition-colors duration-cinematic"
+          data-cursor="project"
+        >
+          {/* Subtle image scaling effect on hover */}
+          <div className="absolute inset-0 bg-surfaceHover opacity-50 group-hover:opacity-0 transition-opacity duration-normal z-10" />
+          
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-bg to-surface group-hover:scale-105 transition-transform duration-cinematic">
+            <span className="text-[120px] filter drop-shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-cinematic opacity-80 group-hover:opacity-100">
+              {project.emoji}
+            </span>
+          </div>
+
+          {/* Featured Badge */}
+          {project.featured && (
+            <div className="absolute top-6 left-6 z-20">
+              <span className="px-4 py-2 bg-accent/20 backdrop-blur-md text-accent border border-accent/20 rounded-full text-xs font-mono uppercase tracking-widest">
+                Featured
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Right: Content */}
+        <div className="flex flex-col items-start gap-8">
+          <div className="flex flex-col gap-4">
+            <p className="font-mono text-xl text-accent">
+              {project.id}
+            </p>
+            <h3 className="text-[clamp(2.5rem,4vw,4rem)] leading-[1.1] font-bold text-textMain tracking-tight">
+              {project.title}
+            </h3>
+            <p className="font-mono text-detail text-textMuted uppercase tracking-wider">
+              {project.category}
+            </p>
+          </div>
+
+          <p className="text-body text-textMuted leading-relaxed max-w-xl">
+            {project.desc}
+          </p>
+
+          <div className="flex flex-wrap gap-3">
+            {project.tech.map((t) => (
+              <span 
+                key={t} 
+                className="px-4 py-2 text-xs font-mono tracking-widest text-textMuted uppercase border border-border rounded-full"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <div className="pt-8">
+            <a 
+              href={project.github}
+              target="_blank" 
+              rel="noreferrer"
+              className="group flex items-center gap-4 text-textMain font-mono text-sm tracking-widest uppercase hover:text-accent transition-colors duration-micro"
+              data-cursor="hover"
+            >
+              <span>View Source</span>
+              <span className="w-12 h-px bg-border group-hover:bg-accent group-hover:w-20 transition-all duration-normal" />
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default HorizontalScrollCarousel;

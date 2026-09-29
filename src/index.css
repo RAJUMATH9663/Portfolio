@@ -1,340 +1,109 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap');
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Archivo', sans-serif;
+  body {
+    @apply bg-bg text-textMain font-sans overflow-x-hidden antialiased;
   }
-  .theme {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
-  }
-  :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-  }
-  .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-  }
-  * {
-    @apply border-border;
-  }
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-body {
-  background-color: #0F172A;
-  color: #F8FAFC;
-  font-family: 'Space Grotesk', sans-serif;
-  overflow-x: hidden;
 }
 
 /* ─── Custom Scrollbar ─── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0F172A; }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #475569; }
+::-webkit-scrollbar-track { @apply bg-bg; }
+::-webkit-scrollbar-thumb { @apply bg-surfaceHover rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-border; }
 
-/* ─── Glassmorphism ─── */
-.glass {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.15), 0 4px 20px rgba(0,0,0,0.5);
-}
-
-.glass-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.5), 0 8px 30px rgba(0,0,0,0.6);
-  transition: all 0.3s ease;
-}
-
-.glass-card:hover {
-  border-color: rgba(255,255,255,0.3);
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), inset 0 -1px 2px rgba(0,0,0,0.5), 0 15px 40px rgba(0,0,0,0.8);
-  transform: translateY(-6px) scale(1.01);
-}
-
-/* ─── Gradient Text ─── */
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #aaaaaa 50%, #ffffff 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-
-.gradient-text-gold {
-  background: linear-gradient(135deg, #ffffff 0%, #dddddd 50%, #ffffff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Glow Button ─── */
-.btn-primary {
-  position: relative;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, #22C55E, #16A34A);
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: white;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 20px rgba(34,197,94,0.3);
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #4ADE80, #22C55E);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.btn-primary:hover::before { opacity: 1; }
-.btn-primary:hover { box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 0 30px rgba(34,197,94,0.5), 0 8px 30px rgba(0,0,0,0.8); transform: translateY(-3px); }
-.btn-primary span { position: relative; z-index: 1; }
-
-.btn-outline {
-  padding: 14px 32px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #F8FAFC;
-  background: transparent;
-  transition: all 0.3s ease;
-}
-
-.btn-outline:hover {
-  border-color: #22C55E;
-  background: rgba(34,197,94,0.1);
-  box-shadow: 0 0 20px rgba(34,197,94,0.2);
-  color: white;
-}
-
-/* ─── Section Title ─── */
-.section-title {
-  font-family: 'Archivo', sans-serif;
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-/* ─── Particle canvas ─── */
-#particle-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── Noise texture overlay ─── */
+/* ─── Subtle Grain ─── */
 .noise::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   pointer-events: none;
-  opacity: 0.4;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  z-index: 50;
 }
 
-/* ─── Animated border ─── */
-.animated-border {
-  position: relative;
-  border-radius: 16px;
-  padding: 1px;
-  background: linear-gradient(var(--angle, 0deg), #333333, #ffffff, #333333);
-  animation: border-spin 4s linear infinite;
+/* ─── Glassmorphism ─── */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--tw-colors-border);
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+.glass-card {
+  @apply glass rounded-xl transition-all duration-normal ease-normal;
+}
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
-@keyframes border-spin {
-  to { --angle: 360deg; }
+/* ─── Typography & Utilities ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #111111 0%, #666666 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ─── Timeline ─── */
-.timeline-line {
-  position: absolute;
-  left: 50%;
-  top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, #ffffff, #aaaaaa, transparent);
-  transform: translateX(-50%);
+.section-title {
+  @apply text-section text-textMain uppercase;
 }
 
-/* ─── Tag chip ─── */
-.tech-chip {
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #cccccc;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 2px 4px rgba(0,0,0,0.5);
-  transition: all 0.2s;
+/* ─── Premium Buttons ─── */
+.btn-primary {
+  @apply relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-textMain text-bg font-sans font-medium text-detail rounded-full overflow-hidden transition-all duration-micro ease-micro hover:bg-accent hover:text-white hover:scale-[1.02];
 }
 
-.tech-chip:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.3);
-  color: white;
+.btn-outline {
+  @apply relative inline-flex items-center justify-center gap-2 px-8 py-4 border border-border text-textMain font-sans font-medium text-detail rounded-full transition-all duration-micro ease-micro hover:bg-surfaceHover hover:border-textMain/20;
 }
 
-/* ─── Glow dot ─── */
-.glow-dot {
-  width: 10px; height: 10px;
+/* ─── Custom Cursor Component styles ─── */
+#custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: white;
   border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 12px 4px rgba(255,255,255,0.3);
-  animation: pulse 2s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s, background 0.2s;
 }
 
-/* ─── Nav active underline ─── */
-.nav-link {
-  position: relative;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #a3a3a3;
-  transition: color 0.2s;
+#custom-cursor.active {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.nav-link::after {
-  content: '';
+#custom-cursor.view-project {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+#custom-cursor.view-project::after {
+  content: 'VIEW';
   position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 2px;
-  background: linear-gradient(90deg, #aaaaaa, #ffffff);
-  border-radius: 1px;
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover { color: white; }
-.nav-link:hover::after { width: 100%; }
-
-/* ─── Shimmer ─── */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* ─── Grid pattern ─── */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* ─── Marquee ─── */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* ─── SmoothCursor ─── */
-.hide-default-cursor * {
-  cursor: none !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 500;
 }

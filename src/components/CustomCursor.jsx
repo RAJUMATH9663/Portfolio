@@ -1,79 +1,95 @@
-import { useEffect, useState, useRef } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import './CustomCursor.css';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-export default function CustomCursor() {
-  const [clicked, setClicked] = useState(false);
-  const [linkHovered, setLinkHovered] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  
-  const cursorRef = useRef(null);
-  const dotRef = useRef(null);
+const CustomCursor = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [cursorVariant, setCursorVariant] = useState('default');
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  useGSAP(() => {
-    // gsap.quickTo is highly optimized for performance and bypasses React renders completely!
-    const xToCursor = gsap.quickTo(cursorRef.current, "left", { duration: 0.2, ease: "power3", unit: "px" });
-    const yToCursor = gsap.quickTo(cursorRef.current, "top", { duration: 0.2, ease: "power3", unit: "px" });
-    
-    // The dot follows instantly
-    const xToDot = gsap.quickTo(dotRef.current, "left", { duration: 0.05, ease: "power3", unit: "px" });
-    const yToDot = gsap.quickTo(dotRef.current, "top", { duration: 0.05, ease: "power3", unit: "px" });
+  useEffect(() => {
+    // Check if touch device
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      setIsTouchDevice(true);
+      return;
+    }
 
-    const onMouseMove = (e) => {
-      xToCursor(e.clientX);
-      yToCursor(e.clientY);
-      xToDot(e.clientX);
-      yToDot(e.clientY);
+    const updateMousePosition = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    const onMouseDown = () => setClicked(true);
-    const onMouseUp = () => setClicked(false);
-    const onMouseLeave = () => setHidden(true);
-    const onMouseEnter = () => setHidden(false);
+    window.addEventListener('mousemove', updateMousePosition);
 
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseenter", onMouseEnter);
-    document.addEventListener("mouseleave", onMouseLeave);
-    document.addEventListener("mousedown", onMouseDown);
-    document.addEventListener("mouseup", onMouseUp);
-
-    const handleLinkHoverEvents = () => {
-      document.querySelectorAll("a, button, .interactive, .tech-chip").forEach(el => {
-        el.addEventListener("mouseenter", () => setLinkHovered(true));
-        el.addEventListener("mouseleave", () => setLinkHovered(false));
-      });
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      if (target.closest('[data-cursor="project"]')) {
+        setCursorVariant('project');
+      } else if (target.closest('a') || target.closest('button') || target.closest('[data-cursor="hover"]')) {
+        setCursorVariant('hover');
+      } else {
+        setCursorVariant('default');
+      }
     };
 
-    const timeoutId = setTimeout(() => {
-      handleLinkHoverEvents();
-    }, 500);
+    window.addEventListener('mouseover', handleMouseOver);
 
     return () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseenter", onMouseEnter);
-      document.removeEventListener("mouseleave", onMouseLeave);
-      document.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mouseup", onMouseUp);
-      clearTimeout(timeoutId);
+      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
 
-  const cursorClasses = `custom-cursor 
-    ${clicked ? "cursor-clicked" : ""} 
-    ${hidden ? "cursor-hidden" : ""} 
-    ${linkHovered ? "cursor-hover" : ""}`;
+  if (isTouchDevice) return null;
+
+  const variants = {
+    default: {
+      x: mousePosition.x - 4,
+      y: mousePosition.y - 4,
+      width: 8,
+      height: 8,
+      backgroundColor: '#111111',
+      mixBlendMode: 'normal',
+    },
+    hover: {
+      x: mousePosition.x - 20,
+      y: mousePosition.y - 20,
+      width: 40,
+      height: 40,
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(17, 17, 17, 0.5)',
+      mixBlendMode: 'normal',
+    },
+    project: {
+      x: mousePosition.x - 40,
+      y: mousePosition.y - 40,
+      width: 80,
+      height: 80,
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      backdropFilter: 'blur(4px)',
+      border: '1px solid rgba(17, 17, 17, 0.2)',
+      mixBlendMode: 'normal',
+    }
+  };
 
   return (
     <>
-      <div 
-        ref={cursorRef}
-        className={cursorClasses}
-      />
-      <div 
-        ref={dotRef}
-        className={`custom-cursor-dot ${hidden ? "cursor-hidden" : ""}`}
-      />
+      <motion.div
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center"
+        variants={variants}
+        animate={cursorVariant}
+        transition={{ type: 'tween', ease: 'backOut', duration: 0.15 }}
+      >
+        {cursorVariant === 'project' && (
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-[10px] font-mono tracking-widest text-textMain font-medium"
+          >
+            VIEW
+          </motion.span>
+        )}
+      </motion.div>
     </>
   );
-}
+};
+
+export default CustomCursor;

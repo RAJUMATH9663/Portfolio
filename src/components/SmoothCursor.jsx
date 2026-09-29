@@ -1,199 +1,141 @@
-import { useEffect, useRef, useState } from "react"
-import { motion, useSpring } from "framer-motion"
+import React, { useEffect, useRef } from "react";
 
-const DESKTOP_POINTER_QUERY = "(any-hover: hover) and (any-pointer: fine)"
-
-function isTrackablePointer(pointerType) {
-  return pointerType !== "touch"
-}
-
-// A simple modern arrow cursor using the CTA green color
-const DefaultCursorSVG = () => (
-  <svg
-    width="28"
-    height="28"
-    viewBox="0 0 28 28"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M10.5 4.5L23.5 13.5L14.5 16.5L12 25L10.5 4.5Z"
-      fill="#22C55E"
-      stroke="#1E293B"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-export function SmoothCursor({
-  cursor = <DefaultCursorSVG />,
-  springConfig = {
-    damping: 45,
-    stiffness: 400,
-    mass: 1,
-    restDelta: 0.001,
-  },
-}) {
-  const lastMousePos = useRef({ x: 0, y: 0 })
-  const velocity = useRef({ x: 0, y: 0 })
-  const lastUpdateTime = useRef(Date.now())
-  const previousAngle = useRef(0)
-  const accumulatedRotation = useRef(0)
-  const [isEnabled, setIsEnabled] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-
-  const cursorX = useSpring(0, springConfig)
-  const cursorY = useSpring(0, springConfig)
-  const rotation = useSpring(0, {
-    ...springConfig,
-    damping: 60,
-    stiffness: 300,
-  })
-  const scale = useSpring(1, {
-    ...springConfig,
-    stiffness: 500,
-    damping: 35,
-  })
+export function SmoothCursor() {
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(DESKTOP_POINTER_QUERY)
-
-    const updateEnabled = () => {
-      const nextIsEnabled = mediaQuery.matches
-      setIsEnabled(nextIsEnabled)
-
-      if (!nextIsEnabled) {
-        setIsVisible(false)
-      }
+    // Only run custom cursor on desktop pointer devices
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      return;
     }
 
-    updateEnabled()
-    mediaQuery.addEventListener("change", updateEnabled)
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isHovered = false;
+    let isClicking = false;
+    let isVisible = false;
+    let rafId = null;
+
+    const onMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!isVisible) {
+        isVisible = true;
+        dot.style.opacity = "1";
+        ring.style.opacity = "1";
+      }
+
+      // Dot snaps directly with zero latency
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+    };
+
+    const onMouseDown = () => {
+      isClicking = true;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) scale(0.7)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(0.85)`;
+    };
+
+    const onMouseUp = () => {
+      isClicking = false;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) scale(1)`;
+    };
+
+    const onMouseLeave = () => {
+      isVisible = false;
+      dot.style.opacity = "0";
+      ring.style.opacity = "0";
+    };
+
+    const onMouseEnter = () => {
+      isVisible = true;
+      dot.style.opacity = "1";
+      ring.style.opacity = "1";
+    };
+
+    // Smooth trailing ring loop with high-performance linear interpolation (LERP)
+    const render = () => {
+      ringX += (mouseX - ringX) * 0.22;
+      ringY += (mouseY - ringY) * 0.22;
+
+      const scale = isHovered ? 1.6 : isClicking ? 0.85 : 1;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${scale})`;
+
+      rafId = requestAnimationFrame(render);
+    };
+
+    // Hover listener on interactive elements
+    const handleElementHover = (e) => {
+      const target = e.target;
+      if (
+        target &&
+        (target.tagName === "BUTTON" ||
+          target.tagName === "A" ||
+          target.closest("button") ||
+          target.closest("a") ||
+          target.classList.contains("interactive") ||
+          target.classList.contains("tech-chip"))
+      ) {
+        isHovered = true;
+        ring.style.borderColor = "#22c55e";
+        ring.style.backgroundColor = "rgba(34, 197, 94, 0.1)";
+      } else {
+        isHovered = false;
+        ring.style.borderColor = "rgba(168, 85, 247, 0.4)";
+        ring.style.backgroundColor = "transparent";
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mousedown", onMouseDown, { passive: true });
+    window.addEventListener("mouseup", onMouseUp, { passive: true });
+    document.addEventListener("mouseleave", onMouseLeave, { passive: true });
+    document.addEventListener("mouseenter", onMouseEnter, { passive: true });
+    document.addEventListener("mouseover", handleElementHover, { passive: true });
+
+    rafId = requestAnimationFrame(render);
 
     return () => {
-      mediaQuery.removeEventListener("change", updateEnabled)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!isEnabled) {
-      return
-    }
-
-    let timeout = null
-
-    const updateVelocity = (currentPos) => {
-      const currentTime = Date.now()
-      const deltaTime = currentTime - lastUpdateTime.current
-
-      if (deltaTime > 0) {
-        velocity.current = {
-          x: (currentPos.x - lastMousePos.current.x) / deltaTime,
-          y: (currentPos.y - lastMousePos.current.y) / deltaTime,
-        }
-      }
-
-      lastUpdateTime.current = currentTime
-      lastMousePos.current = currentPos
-    }
-
-    const smoothPointerMove = (e) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return
-      }
-
-      setIsVisible(true)
-
-      const currentPos = { x: e.clientX, y: e.clientY }
-      updateVelocity(currentPos)
-
-      const speed = Math.sqrt(
-        Math.pow(velocity.current.x, 2) + Math.pow(velocity.current.y, 2)
-      )
-
-      cursorX.set(currentPos.x)
-      cursorY.set(currentPos.y)
-
-      if (speed > 0.1) {
-        const currentAngle =
-          Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
-          90
-
-        let angleDiff = currentAngle - previousAngle.current
-        if (angleDiff > 180) angleDiff -= 360
-        if (angleDiff < -180) angleDiff += 360
-        accumulatedRotation.current += angleDiff
-        rotation.set(accumulatedRotation.current)
-        previousAngle.current = currentAngle
-
-        scale.set(0.95)
-
-        if (timeout !== null) {
-          clearTimeout(timeout)
-        }
-
-        timeout = setTimeout(() => {
-          scale.set(1)
-        }, 150)
-      }
-    }
-
-    let rafId = 0
-    const throttledPointerMove = (e) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return
-      }
-
-      if (rafId) return
-
-      rafId = requestAnimationFrame(() => {
-        smoothPointerMove(e)
-        rafId = 0
-      })
-    }
-
-    document.body.classList.add("hide-default-cursor")
-    window.addEventListener("pointermove", throttledPointerMove, {
-      passive: true,
-    })
-
-    return () => {
-      window.removeEventListener("pointermove", throttledPointerMove)
-      document.body.classList.remove("hide-default-cursor")
-      if (rafId) cancelAnimationFrame(rafId)
-      if (timeout !== null) {
-        clearTimeout(timeout)
-      }
-    }
-  }, [cursorX, cursorY, rotation, scale, isEnabled])
-
-  if (!isEnabled) {
-    return null
-  }
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      document.removeEventListener("mouseenter", onMouseEnter);
+      document.removeEventListener("mouseover", handleElementHover);
+    };
+  }, []);
 
   return (
-    <motion.div
-      style={{
-        position: "fixed",
-        left: cursorX,
-        top: cursorY,
-        x: "-50%",
-        y: "-50%",
-        rotate: rotation,
-        scale: scale,
-        zIndex: 9999,
-        pointerEvents: "none",
-        willChange: "transform",
-        opacity: isVisible ? 1 : 0,
-      }}
-      initial={false}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{
-        duration: 0.15,
-      }}
-    >
-      {cursor}
-    </motion.div>
-  )
+    <>
+      {/* Precision center dot */}
+      <div
+        ref={dotRef}
+        className="fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 rounded-full bg-accent pointer-events-none z-[99999] opacity-0 transition-opacity duration-200"
+        style={{
+          willChange: "transform",
+          boxShadow: "0 0 8px #22c55e",
+        }}
+      />
+
+      {/* Smooth trailing glow aura */}
+      <div
+        ref={ringRef}
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-purple-500/40 pointer-events-none z-[99998] opacity-0 transition-[border-color,background-color,opacity] duration-200"
+        style={{
+          willChange: "transform",
+          boxShadow: "0 0 16px rgba(168, 85, 247, 0.2)",
+        }}
+      />
+    </>
+  );
 }
+
+export default SmoothCursor;

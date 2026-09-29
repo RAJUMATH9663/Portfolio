@@ -1,135 +1,135 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const about = {
-  description: `I'm a Software Engineer and AI enthusiast from Vijayapura, Karnataka, India. I hold a Bachelor of Computer Applications (BCA) with a stellar CGPA of 8.67. My passion lies at the intersection of AI and backend engineering — crafting intelligent systems that solve real-world problems.`,
-  traits: [
-    { emoji: '🎓', title: 'Education', desc: 'BCA | CGPA 8.67' },
-    { emoji: '📍', title: 'Location', desc: 'Vijayapura, Karnataka' },
-    { emoji: '💼', title: 'Focus', desc: 'AI & Backend Engineering' },
-    { emoji: '🌐', title: 'Languages', desc: 'Python, PHP, JavaScript, SQL, C#' },
-  ],
-  timeline: [
-    { year: '2026', event: 'Software Engineer & QA Engineer at V G Parekh' },
-    { year: '2026', event: 'Software Development Intern at Digital Dreams' },
-    { year: '2026', event: 'Completed BCA with CGPA 8.67' },
-    { year: '2025', event: 'Built AI Data Intelligence Platform' },
-  ],
+  quote: "Technology should not only work. It should create an experience.",
+  description1: "I'm a Software Engineer and QA Engineer from Basavan Bagewadi, Karnataka, India. I hold a Bachelor of Computer Applications (BCA) with a stellar CGPA of 8.67. My passion lies at the intersection of AI, full-stack development, and quality assurance — crafting intelligent systems that solve real-world problems.",
+  description2: "From building AI agents with LangGraph and knowledge graphs with Neo4j, to designing scalable Laravel/Django applications and leading UAT validation cycles — I'm always exploring the frontier of what's possible with modern tech.",
+  stats: [
+    { label: 'EDUCATION', value: 'BCA (8.67 CGPA)' },
+    { label: 'LOCATION', value: 'Basavan Bagewadi, IN' },
+    { label: 'FOCUS', value: 'Full-Stack & QA' },
+    { label: 'LANGUAGES', value: 'Python, PHP, JS, SQL' },
+  ]
 };
 
 const About = () => {
-  return (
-    <section id="about" className="relative py-28 overflow-hidden">
-      {/* Background blur */}
-      <div className="absolute -left-40 top-20 w-96 h-96 bg-accent/8 rounded-full blur-[100px] pointer-events-none" />
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 80%", "end 20%"]
+  });
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Header */}
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
+  // Split quote into words for animation
+  const words = about.quote.split(" ");
+
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+    }),
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+    hidden: {
+      opacity: 0,
+      y: 40,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+  };
+
+  return (
+    <section id="about" ref={sectionRef} className="relative py-32 md:py-48 bg-bg overflow-hidden w-full">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* Section Label */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-4 mb-20"
         >
-          <p className="font-mono text-accent text-sm tracking-widest uppercase mb-3">Who I Am</p>
-          <h2 className="section-title text-textMain mb-4">
-            About <span className="gradient-text">Me</span>
-          </h2>
-          <div className="mx-auto w-20 h-0.5 bg-gradient-to-r from-accent to-cyan rounded-full" />
+          <div className="w-2 h-2 rounded-full bg-accent" />
+          <p className="font-mono text-detail text-textMuted uppercase tracking-widest">About</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: Bio */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col gap-8"
-          >
-            <p className="text-textMuted text-lg leading-relaxed">{about.description}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
+          
+          {/* Left: Editorial Typography */}
+          <div className="lg:col-span-8 flex flex-col gap-16">
+            
+            {/* Word-by-word Quote Reveal */}
+            <motion.h2 
+              variants={container}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.1] font-bold text-textMain tracking-tight"
+            >
+              {words.map((word, index) => (
+                <motion.span
+                  variants={child}
+                  key={index}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h2>
 
-            <p className="text-textMuted text-lg leading-relaxed">
-              From building <span className="text-textMain font-semibold">AI agents with LangGraph</span> and knowledge graphs
-              with Neo4j, to designing scalable Django APIs and monitoring infrastructure dashboards — I'm always
-              exploring the frontier of what's possible with modern tech.
-            </p>
+            {/* Sub-description with subtle parallax */}
+            <motion.div 
+              style={{ y }}
+              className="flex flex-col gap-8 max-w-2xl"
+            >
+              <p className="text-body text-textMuted leading-relaxed">
+                {about.description1}
+              </p>
+              <p className="text-body text-textMuted leading-relaxed">
+                {about.description2}
+              </p>
+              
+              <div className="pt-8">
+                <a href="/resume.pdf" download className="btn-outline">
+                  DOWNLOAD RESUME
+                </a>
+              </div>
+            </motion.div>
 
-            {/* Trait cards */}
-            <div className="grid grid-cols-2 gap-4">
-              {about.traits.map((trait, i) => (
+          </div>
+
+          {/* Right: Stats Grid */}
+          <div className="lg:col-span-3 lg:col-start-10 mt-12 lg:mt-0">
+            <div className="flex flex-col border-t border-border">
+              {about.stats.map((stat, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                  className="glass-card rounded-xl p-4 flex items-center gap-3"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="py-8 border-b border-border flex flex-col gap-2 group hover:bg-surfaceHover transition-colors duration-normal -mx-6 px-6"
                 >
-                  <span className="text-2xl">{trait.emoji}</span>
-                  <div>
-                    <p className="text-xs text-textFaint font-semibold uppercase tracking-wide">{trait.title}</p>
-                    <p className="text-textMain font-medium text-sm mt-0.5">{trait.desc}</p>
-                  </div>
+                  <p className="font-mono text-[10px] text-textMuted tracking-[0.2em] group-hover:text-accent transition-colors duration-micro">
+                    {stat.label}
+                  </p>
+                  <p className="text-xl font-medium text-textMain tracking-tight">
+                    {stat.value}
+                  </p>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Right: Timeline */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <h3 className="text-xl font-bold text-textMain mb-8">My Journey</h3>
-            <div className="relative">
-              {/* Vertical line */}
-              <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-cyan to-transparent" />
-
-              <div className="flex flex-col gap-8">
-                {about.timeline.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15, duration: 0.5 }}
-                    className="flex gap-6 items-start"
-                  >
-                    {/* Dot */}
-                    <div className="relative flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full border border-accent/40 bg-bgAlt flex items-center justify-center z-10 relative">
-                        <div className="w-3 h-3 rounded-full bg-accent shadow-glow-accent" />
-                      </div>
-                    </div>
-                    {/* Content */}
-                    <div className="glass-card rounded-xl p-4 flex-1">
-                      <p className="text-xs font-mono text-accent tracking-widest mb-1">{item.year}</p>
-                      <p className="text-textMain font-medium">{item.event}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="mt-10"
-            >
-              <a href="/resume.pdf" download className="btn-primary inline-flex items-center gap-2">
-                <span>Download Full Resume</span>
-                <svg className="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </a>
-            </motion.div>
-          </motion.div>
         </div>
       </div>
     </section>
